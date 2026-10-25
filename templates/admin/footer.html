@@ -1,0 +1,72 @@
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0
+    </div>
+    <strong>Copyright &copy; 2020-26 <a href="#">ASTHA FINANCE</a>.</strong> All rights reserved.
+  </footer>
+  <div class="control-sidebar-bg"></div>
+</div>
+
+<script src="/static/assets/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/static/assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script>$.widget.bridge('uibutton', $.ui.button);</script>
+<script src="/static/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/static/assets/bower_components/select2/dist/js/select2.full.min.js"></script>
+<script src="/static/assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+<script src="/static/assets/dist/js/adminlte.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(function () {
+    $('.select2').select2();
+    $('.numInput').on('input blur paste', function(){
+      $(this).val($(this).val().replace(/\D/g, ''));
+    });
+    if ($('#example1').length) {
+      $('#example1').DataTable({
+        dom: 'lBfrtip',
+        buttons: [
+          { extend: 'excelHtml5', footer: true },
+          { extend: 'pdfHtml5', footer: true }
+        ]
+      });
+    }
+  });
+
+  function Popup(data) {
+    var frame1 = $('<iframe />');
+    frame1[0].name = "frame1";
+    frame1.css({"position": "absolute", "top": "-1000000px"});
+    $("body").append(frame1);
+    var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+    frameDoc.document.open();
+    frameDoc.document.write('<html><head><title>Print Receipt</title></head><body>' + data + '</body></html>');
+    frameDoc.document.close();
+    setTimeout(function () {
+      window.frames["frame1"].focus();
+      window.frames["frame1"].print();
+      frame1.remove();
+    }, 500);
+    return true;
+  }
+
+  $(document).on('click', '.printReceipt', function(e){
+    e.preventDefault();
+    var coll_id = $(this).attr('href');
+    $.ajax({
+      url: '/admin/collection/print',
+      type: 'POST',
+      data: { collection_id: coll_id },
+      success: function(resp) {
+        Popup(resp);
+      }
+    });
+  });
+</script>
+</body>
+</html>

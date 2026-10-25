@@ -1,0 +1,88 @@
+{% include 'admin/header.html' %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>Report 3: Total Balance & Disbursements</h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Add Total Balance Record</h3>
+          </div>
+          <form method="POST" action="/admin/report/totalBalReport">
+            <div class="box-body">
+              {% if msg %}{{ msg|safe }}{% endif %}
+              <div class="form-group">
+                <label for="total_disabesment">Total Payment Disbursement</label>
+                <input type="number" step="0.01" name="total_disabesment" class="form-control" id="total_disabesment" placeholder="Total Disbursement" required>
+              </div>
+              <div class="form-group">
+                <label for="current_outstanding">Current Outstanding</label>
+                <input type="number" step="0.01" name="current_outstanding" class="form-control" id="current_outstanding" placeholder="Current Outstanding" required>
+              </div>
+              <div class="form-group">
+                <label for="difference_outstanding">Difference Outstanding</label>
+                <input type="number" step="0.01" name="difference_outstanding" class="form-control" id="difference_outstanding" placeholder="Difference Outstanding" required>
+              </div>
+              <div class="form-group">
+                <label for="client_disabsment">Total Client Disbursement</label>
+                <input type="number" step="0.01" name="client_disabsment" class="form-control" id="client_disabsment" placeholder="Client Disbursement" required>
+              </div>
+              <div class="form-group">
+                <label for="interest_amount">Interest Amount</label>
+                <input type="number" step="0.01" name="interest_amount" class="form-control" id="interest_amount" placeholder="Interest Amount" required>
+              </div>
+            </div>
+            <div class="box-footer">
+              <button type="submit" class="btn btn-primary">Add Report</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Total Balance Records</h3>
+          </div>
+          <div class="box-body">
+            {% if delmsg %}{{ delmsg|safe }}{% endif %}
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>S.No.</th>
+                  <th>Total Pay Dis.</th>
+                  <th>Current Out.</th>
+                  <th>Diff. Out.</th>
+                  <th>Client Dis.</th>
+                  <th>Interest</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for r in rep_list %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td class="text-right">₹ {{ r.total_disabesment|number_format }}</td>
+                  <td class="text-right">₹ {{ r.current_outstanding|number_format }}</td>
+                  <td class="text-right">₹ {{ r.difference_outstanding|number_format }}</td>
+                  <td class="text-right">₹ {{ r.client_disabsment|number_format }}</td>
+                  <td class="text-right">₹ {{ r.interest_amount|number_format }}</td>
+                  <td>{{ r.ad_date|date_format }}</td>
+                  <td>
+                    <a href="/admin/report/totbalRepDel/{{ r.rid }}" onclick="return confirm('Do you really want to delete this record?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% include 'admin/footer.html' %}

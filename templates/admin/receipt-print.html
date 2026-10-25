@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <title>Receipt #{{ receipt.collection_id }}</title>
+  <meta charset="utf-8">
+  <style>
+    .invoice {
+      width: 80mm;
+      border: 1px solid #000;
+      margin: 0 auto 5px auto;
+      font-family: Arial, sans-serif;
+      padding: 5px;
+    }
+    .header {
+      padding: 10px 0;
+      text-align: center;
+      border-bottom: 1px dashed #000;
+    }
+    .img-lgo {
+      width: 70px;
+      height: auto;
+      display: block;
+      margin: 0 auto 5px auto;
+    }
+    .invtitleDiv p {
+      margin: 6px 0;
+      font-size: 11px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    @media print {
+      body { margin: 0; padding: 0; }
+      .invoice { border: none; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice">
+    <div class="header">
+      <img src="/static/img/logo.png" class="img-lgo" alt="Logo">
+      <h6 style="margin:2px 0; font-size:10px;">ORIGINAL RECEIPT</h6>
+      <h4 style="margin:2px 0;">ASTHA FINANCE</h4>
+      <p style="margin:2px 0; font-size:10px;">NEEMUCH, +91 70147 39285</p>
+    </div>
+    <div style="padding: 10px 5px;">
+      <div class="invtitleDiv">
+        <p><strong>NAME:</strong> {{ receipt.client_name }}</p>
+        <p><strong>CITY:</strong> {{ receipt.city_village }}</p>
+        <p><strong>RECP NO:</strong> {{ receipt.collection_id }}</p>
+        <p><strong>RECP DATE:</strong> {{ receipt.created|date_format }}</p>
+        <p><strong>PREV BAL:</strong> ₹ {{ receipt.prev_bal|number_format }}</p>
+        <p><strong>DEPS AMT:</strong> ₹ {{ receipt.instalment_amt|number_format }}</p>
+        <p><strong>CURR. BAL:</strong> ₹ {{ receipt.due_amount|number_format }}</p>
+        {% if receipt.remark %}
+          <p><strong>REMARK:</strong> {{ receipt.remark }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% include 'admin/header.html' %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      Dashboard
+      <small>Control panel</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">Dashboard</li>
+    </ol>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-aqua">
+          <div class="inner">
+            <h3>{{ totalBranch }}</h3>
+            <p>Total Branch</p>
+          </div>
+          <div class="icon"><i class="fa fa-university"></i></div>
+          <a href="/admin/branch/add" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      
+      <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-green">
+          <div class="inner">
+            <h3>{{ totalLoan }}</h3>
+            <p>Total Loan</p>
+          </div>
+          <div class="icon"><i class="fa fa-money"></i></div>
+          <a href="/admin/loan/list" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      
+      <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-maroon">
+          <div class="inner">
+            <h3>₹ {{ todayCollectAmount|number_format }}</h3>
+            <p>Today Collection</p>
+          </div>
+          <div class="icon"><i class="ion ion-pie-graph"></i></div>
+          <a href="/admin/collection/todayCollection" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-red">
+          <div class="inner">
+            <h3>₹ {{ todayPendingAmount|number_format }}</h3>
+            <p>Today Pending Collection</p>
+          </div>
+          <div class="icon"><i class="ion ion-pie-graph"></i></div>
+          <a href="/admin/collection/todayPending" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="box box-solid">
+          <div class="box-header">
+            <h3 class="box-title text-danger">Today Collect Payment</h3>
+          </div>
+          <div class="box-body text-center">
+            <div id="piechart" style="width: 100%; height: 350px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% include 'admin/footer.html' %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Task', 'Count'],
+    ['Collect', {{ todayCollect }}],
+    ['Pending', {{ todayPendingCollect }}]
+  ]);
+  var options = {
+    title: '',
+    colors: ['#00a65a', '#dd4b39'],
+    pieHole: 0.4
+  };
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  chart.draw(data, options);
+}
+</script>

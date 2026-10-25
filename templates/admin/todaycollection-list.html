@@ -1,0 +1,63 @@
+{% include 'admin/header.html' %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      Today Collection List
+      <a href="/admin/collection/add" class="btn btn-success btn-md pull-right"><i class="fa fa-dashboard"></i> Add New Collection</a>
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            {% if msg %}
+              {{ msg|safe }}
+            {% endif %}
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>S.No.</th>
+                  <th>Client Name</th>
+                  <th>Application No.</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Remark</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for c in collection_list %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ c.client_name }}</td>
+                  <td>{{ c.loan_application_no }}</td>
+                  <td class="text-right">₹ {{ c.instalment_amt|number_format }}</td>
+                  <td>{{ c.collect_date|date_format }}</td>
+                  <td>{{ c.remark }}</td>
+                  <td>
+                    <a href="/admin/collection/instalment/{{ c.loan_id }}" class="btn btn-success btn-sm">View Instalment</a>
+                    <a href="{{ c.collection_id }}" class="btn btn-info btn-sm printReceipt" title="Print Receipt"><i class="fa fa-print"></i></a>
+                    {% if c.can_delete %}
+                      <a href="/admin/collection/deleteInstalment/{{ c.loan_id }}/{{ c.instal_no }}" onclick="return confirm('Do you Really Want To Delete This Instalment ?')" class="btn btn-danger btn-sm" title="Delete Instalment"><i class="fa fa-trash"></i></a>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3" class="text-right"><strong>Total</strong></td>
+                  <td class="text-right"><strong>₹ {{ total_amount|number_format }}</strong></td>
+                  <td colspan="3"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% include 'admin/footer.html' %}

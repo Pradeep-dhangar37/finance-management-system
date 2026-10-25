@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astha Finance</title>
+    <link rel="stylesheet" href="/static/assets/frontend/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/solid.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/brands.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/style.css">
+    <link rel="stylesheet" href="/static/assets/bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="/static/assets/bower_components/jquery-ui/themes/base/jquery-ui.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <style>
+        .dashBoardBtnDiv a{
+            display:block;
+            margin-top:20px;
+            margin-bottom:20px;
+            padding:15px;
+            font-size:18px;
+            color:#fff !important;
+        }
+        .addCollectionBtn{
+            background:#3a4094;
+            color:#fff;
+            margin-top:20px;
+        }
+        .collectAmountDiv{
+            display:none;
+            margin-top:10px;
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'app/header2.html' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 p-0">
+                <div class="text-center">
+                    <h4 style="margin-top:30px;">Add New Collection</h4>
+                </div>
+                <form method="POST" action="/app/collection/add" style="margin-top:20px; padding: 0 15px;">
+                    <div>
+                        {{ msg | safe }}
+                    </div>
+                    <div class="form-group">
+                        <label for="loan_id">Client Name/Application No.</label>
+                        <select name="loan_id" id="loan_id" class="form-control select2" required>
+                            <option value="">Select Client Name/Application No.</option>
+                            {% for v in loan_list %}
+                            {% if v.for_close != 'yes' %}
+                            <option value="{{ v.loan_id }}">{{ v.client_name }} ({{ v.loan_application_no }})</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        {% if errors.loan_id %}
+                        <span class="text-danger">{{ errors.loan_id }}</span>
+                        {% endif %}
+                        <div class="collectAmountDiv">
+                            <span>Instalment Amount :- </span>
+                            <span class="instalmentAmtText font-weight-bold"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="hidden" name="instalment_amt" id="ins_amount">
+                        <input type="hidden" class="form-control numInput" id="instalment_amt" disabled>
+                        {% if errors.instalment_amt %}
+                        <span class="text-danger">{{ errors.instalment_amt }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="payment_date">Date</label>
+                        <input type="text" name="payment_date" class="form-control" id="payment_date" autocomplete="off" required>
+                        {% if errors.payment_date %}
+                        <span class="text-danger">{{ errors.payment_date }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="remark">Remark</label>
+                        <textarea name="remark" id="remark" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn pull-right addCollectionBtn">Add Collection</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% include 'app/footer.html' %}

@@ -1,0 +1,53 @@
+    <script src="/static/assets/frontend/js/jquery-3.6.0.min.js"></script>
+    <script src="/static/assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="/static/assets/frontend/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/assets/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <script src="/static/assets/frontend/js/fontawesome.min.js"></script>
+    <script>
+        $(window).on('load', function() {
+            $('#preloader').fadeOut('slow', function(){ $(this).remove(); });
+        });
+        $(function(){
+            if ($("#payment_date").length) {
+                $("#payment_date").datepicker({ 
+                    dateFormat: 'dd-mm-yy' 
+                });
+            }
+            if ($('.select2').length) {
+                $('.select2').select2();
+            }
+        });
+        function goBack() {
+            window.history.back();
+        }
+        jQuery(function(){
+            $('#loan_id').change(function(){
+                var loan_id = $(this).val();
+                if(!loan_id) {
+                    $('.collectAmountDiv').hide();
+                    return;
+                }
+                $.ajax({
+                    url: '/app/collection/getInstalmentAmount',
+                    type: 'POST',
+                    data: { loan_id: loan_id },
+                    dataType: 'json',
+                    success: function(response){
+                        if(response.status == 200){
+                            $('.collectAmountDiv').show();
+                            $('.instalmentAmtText').text(response.data.instalment_amount);
+                            $('#ins_amount').val(response.data.instalment_amount);
+                            $('#instalment_amt').val(response.data.instalment_amount);
+                        } else {
+                            $('.collectAmountDiv').hide();
+                        }
+                    },
+                    error: function(){
+                        $('.collectAmountDiv').hide();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

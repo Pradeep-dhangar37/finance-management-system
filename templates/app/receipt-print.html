@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Invoice</title>
+		<meta charset="utf-8">
+		<style>
+			.invoice{
+				width:80mm;
+				border:1px solid #000;
+				margin-left:auto;
+				margin-right:auto;
+                margin-bottom:5px;
+                font-family:arial;
+                transform: scale(2.0);
+                position:relative;
+                top:180px;
+                padding: 10px;
+                background: #fff;
+			}
+			.header{
+			    padding:10px 0px;
+			}
+			.invtitleDiv p{
+				margin-bottom:7px;
+				margin-top:0px;
+				font-size:3.7mm;
+			}
+			.pageHead{
+				position:relative;
+				padding-bottom:5mm;
+				margin-bottom:0px;
+				padding-left:5px;
+				padding-right:5px;
+			}
+			table{
+				border-collapse:collapse;
+			}
+			table tr th{
+				padding:1mm;
+				font-size:2.3mm !important;
+				text-align:left !important;
+			}
+			table tr td{
+				padding:1mm;
+			}
+			.img-lgo{
+			  width:90px;
+			  height:50px;
+			}
+			.printInvBtn{
+			    margin-top:350px;
+			    font-size:24px;
+			    display:block;
+			    margin-left:auto;
+			    margin-right:auto;
+                padding: 10px 25px;
+                background: #3a4094;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+			}
+			@media print {
+                 .invoice{
+    				width:80mm;
+    				border:1px solid #000;
+    				margin-left:auto;
+    				margin-right:auto;
+                    margin-bottom:5px;
+                    font-family:arial;
+                    transform: scale(1.0);
+                    position:relative;
+                    top:0px;
+    			}
+    			.printInvBtn{
+    			    display:none;
+    			}
+            }
+		</style>
+	</head>
+	<body>
+	    <div class="invoice">
+	        <div>
+			    <div class="header">
+			        <div style="width:25%;display:inline-block;vertical-align:middle;">
+			            <img src="/static/assets/frontend/img/logo.png" class="img-lgo" alt="Logo">
+			        </div>
+			        <div style="width:73%;display:inline-block;text-align:center;vertical-align:middle;">
+			            <h6 style="margin:0px;font-size:12px;">ORIGINAL RECEIPT</h6>
+			            <h5 style="margin:0px;font-size:14px;">ASTHA FINANCE</h5>
+			            <h5 style="margin:0px;font-size:12px;">NEEMUCH, +91 70147 39285</h5>
+			        </div>
+			    </div>
+				<div class="pageHead">
+					<table width="100%">
+						<tr>
+							<td width="100%" valign="top">
+								<div class="invtitleDiv">
+									<p><strong>NAME: {{ receipt.client_name }}</strong></p>
+									<p><strong>CITY: {{ receipt.city_village }}</strong></p>
+									<p><strong>RECP NO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:{{ receipt.collection_id }}</strong></p>
+									<p><strong>RECP DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :{{ receipt.created | date_format }}</strong></p>
+									<p><strong>PREV BAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:₹ {{ receipt.prev_bal }}</strong></p>
+									<p><strong>DEPS AMT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:₹ {{ receipt.instalment_amt }}</strong></p>
+									<p><strong>CURR. BAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:₹ {{ receipt.due_amount }}</strong></p>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<button class="printInvBtn" onclick="window.print()">Print Invoice</button>
+</body>
+</html>

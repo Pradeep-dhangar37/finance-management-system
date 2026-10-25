@@ -1,0 +1,119 @@
+{% include 'admin/header.html' %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      Loan List
+      <a href="/admin/loan" class="btn btn-success btn-md pull-right"><i class="fa fa-dashboard"></i> Add New Loan</a>
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            {% if msg %}
+              {{ msg|safe }}
+            {% endif %}
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>S.No.</th>
+                  <th>Branch Name</th>
+                  <th>Client Name</th>
+                  <th>Mobile Number</th>
+                  <th>Application No.</th>
+                  <th>Application Date</th>
+                  <th>Loan Amount</th>
+                  <th>Collective Amount</th>
+                  <th>EMI Start</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for l in loan_list %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ l.branch_name }}</td>
+                  <td>{{ l.client_name }}</td>
+                  <td>{{ l.mobile }}</td>
+                  <td>{{ l.loan_application_no }}</td>
+                  <td>{{ l.loan_application_date|date_format }}</td>
+                  <td class="text-right">{{ l.loan_amount|number_format }}</td>
+                  <td class="text-right">{{ l.loan_intrest_amount|number_format }}</td>
+                  <td>{{ l.emi_start_date|date_format }}</td>
+                  <td>
+                    {% if l.status == 1 %}
+                      <button class="btn btn-xs btn-success pendingLoanBtn" data-id="{{ l.loan_id }}">Approved</button>
+                    {% else %}
+                      <button class="btn btn-xs btn-warning approveLoanBtn" data-id="{{ l.loan_id }}">Pending</button>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if l.for_close == 'yes' %}
+                      <button class="btn btn-primary btn-xs" disabled>Closed</button>
+                    {% else %}
+                      <a href="/admin/loan/instalment/{{ l.loan_id }}" class="btn btn-primary btn-xs" title="View Instalments"><i class="fa fa-eye"></i></a>
+                    {% endif %}
+                    
+                    <a href="/admin/loan/edit/{{ l.loan_id }}" class="btn btn-success btn-xs" title="Edit Loan"><i class="fa fa-pencil"></i></a>
+                    
+                    {% if l.del_loan == 'Yes' %}
+                      <a href="/admin/loan/delete/{{ l.loan_id }}" onclick="return confirm('Do You Really Want To Delete This Loan ?')" class="btn btn-danger btn-xs" title="Delete Loan"><i class="fa fa-trash"></i></a>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="6" class="text-right"><strong>Total</strong></td>
+                  <td class="text-right"><strong>{{ total_loan_amount|number_format }}</strong></td>
+                  <td class="text-right"><strong>{{ total_collect_amount|number_format }}</strong></td>
+                  <td colspan="3"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% include 'admin/footer.html' %}
+<script>
+  $(document).on('click', '.pendingLoanBtn', function(e){
+    e.preventDefault();
+    var loan_id = $(this).data('id');
+    Swal.fire({
+      title: 'Do you really want to unapprove this loan?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Unapprove'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.post('/admin/loan/unapproveLoan', { loan_id: loan_id }, function(res) {
+          location.reload();
+        });
+      }
+    });
+  });
+
+  $(document).on('click', '.approveLoanBtn', function(e){
+    e.preventDefault();
+    var loan_id = $(this).data('id');
+    Swal.fire({
+      title: 'Do you really want to approve this loan?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Approve'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.post('/admin/loan/approveLoan', { loan_id: loan_id }, function(res) {
+          location.reload();
+        });
+      }
+    });
+  });
+</script>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astha Finance</title>
+    <link rel="stylesheet" href="/static/assets/frontend/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/solid.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/brands.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <style>
+        .collectionBox{
+            background:#f1f1f1;
+            margin-bottom:15px;
+            padding:15px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        .collectionBox p{
+            font-size:13px;
+            margin:0px;
+        }
+        .cmnBtnColl{
+            font-size:12px;
+            margin-top:10px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'app/header2.html' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 p-3">
+                <div class="text-center">
+                    <h4 style="margin-top:10px;margin-bottom:20px;">Collection List</h4>
+                </div>
+                <div>
+                    {{ msg | safe }}
+                </div>
+                <div class="collectionListDiv">
+                    {% for value in collection_list %}
+                    <div class="collectionBox">
+                        <div class="row">
+                            <div class="col-5">
+                                <div>
+                                    <p>Client Name:-</p>
+                                    <p>Application No:-</p>
+                                    <p>Amount:-</p>
+                                    <p>Date:-</p>
+                                </div>
+                            </div>
+                            <div class="col-7"> 
+                                <div>
+                                    <p>{{ value.client_name }}</p>
+                                    <p>{{ value.loan_application_no }}</p>
+                                    <p>{{ value.instalment_amt }}</p>
+                                    <p>{{ value.payment_date | date_format }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="/app/collection/instalment/{{ value.loan_id }}" class="btn btn-success btn-block cmnBtnColl">View Instalment</a>
+                            </div>
+                            <div class="col-6">
+                                <a href="/app/collection/print/{{ value.collection_id }}" class="btn btn-info btn-block cmnBtnColl printReceipt">Print Invoice</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'app/footer.html' %}

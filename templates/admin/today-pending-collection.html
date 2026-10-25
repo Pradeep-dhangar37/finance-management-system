@@ -1,0 +1,76 @@
+{% include 'admin/header.html' %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      Today Pending Collection List
+      <a href="/admin/collection/add" class="btn btn-success btn-md pull-right"><i class="fa fa-dashboard"></i> Add New Collection</a>
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <form action="/admin/collection/todayPending" method="POST">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label>Select Date</label>
+                    <input type="date" name="search_date" value="{{ search_date }}" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <button type="submit" class="btn btn-success btn-md" style="margin-top:24px;">SEARCH</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="box box-primary">
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>S.No.</th>
+                  <th>Client Name</th>
+                  <th>Application No.</th>
+                  <th>Mobile No.</th>
+                  <th>Amount</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for p in collection_list %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ p.client_name }}</td>
+                  <td>{{ p.loan_application_no }}</td>
+                  <td>{{ p.mobile }}</td>
+                  <td class="text-right">₹ {{ p.instalment_amt|number_format }}</td>
+                  <td>{{ p.due_date|date_format }}</td>
+                  <td><span class="label label-danger">{{ p.status }}</span></td>
+                  <td>
+                    <a href="/admin/collection/instalment/{{ p.loan_id }}" class="btn btn-success btn-sm">View Instalment</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4" class="text-right"><strong>Total</strong></td>
+                  <td class="text-right"><strong>₹ {{ total_amount|number_format }}</strong></td>
+                  <td colspan="3"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% include 'admin/footer.html' %}

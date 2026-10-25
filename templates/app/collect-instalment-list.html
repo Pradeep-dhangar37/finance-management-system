@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astha Finance</title>
+    <link rel="stylesheet" href="/static/assets/frontend/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/solid.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/brands.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <style>
+        .collectionBox{
+            background:#fff;
+            margin-bottom:15px;
+            padding:15px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        .collectionBox p{
+            font-size:13px;
+            margin:0px;
+        }
+        table tr th, table tr td{
+            font-size:11px !important;
+        }
+    </style>
+</head>
+<body>
+    {% include 'app/header2.html' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 p-3">
+                <div class="text-center">
+                    <h4 style="margin-top:10px;margin-bottom:20px;">Customer Detail</h4>
+                </div>
+                <div class="collectionListDiv">
+                    <div class="collectionBox">
+                        <div class="row">
+                            <div class="col-5"><p>Client Name:-</p></div>
+                            <div class="col-7"><p>{{ loan.client_name }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Father/Husband Name:-</p></div>
+                            <div class="col-7"><p>{{ loan.father_name }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>City/village:-</p></div>
+                            <div class="col-7"><p>{{ loan.city_village }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>District:-</p></div>
+                            <div class="col-7"><p>{{ loan.district }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Mobile Number:-</p></div>
+                            <div class="col-7"><p>{{ loan.mobile }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Aadhar Number:-</p></div>
+                            <div class="col-7"><p>{{ loan.aadhar_no }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Branch Name:-</p></div>
+                            <div class="col-7"><p>{{ loan.branch_name }}</p></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <h4 style="margin-top:20px;margin-bottom:20px;">Loan Detail</h4>
+                </div>
+                <div class="collectionListDiv">
+                    <div class="collectionBox">
+                        <div class="row">
+                            <div class="col-5"><p>Loan Application No.:-</p></div>
+                            <div class="col-7"><p>{{ loan.loan_application_no }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Loan Application Date:-</p></div>
+                            <div class="col-7"><p>{{ loan.loan_application_date | date_format }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Loan Amount:-</p></div>
+                            <div class="col-7"><p>{{ loan.loan_amount }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Collective Amount:-</p></div>
+                            <div class="col-7"><p>{{ loan.loan_intrest_amount }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Instalment:-</p></div>
+                            <div class="col-7"><p>{{ loan.instalment }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Instalment Amount:-</p></div>
+                            <div class="col-7"><p>{{ loan.instalment_amount }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Paid Amount:-</p></div>
+                            <div class="col-7"><p>{{ loan.paid_amount }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Due Amount:-</p></div>
+                            <div class="col-7"><p>{{ loan.due_amount }}</p></div>
+                        </div>
+                        {% if loan.for_close != 'yes' %}
+                        <div class="row">
+                            <div class="col-5"><p>Paid Instalment:-</p></div>
+                            <div class="col-7"><p>{{ loan.paid_instalment }}</p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"><p>Due Instalment:-</p></div>
+                            <div class="col-7"><p>{{ loan.due_instalment }}</p></div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>LoanAmt</th>
+                                <th>InsAmt</th>
+                                <th>Debit</th>
+                                <th>Balance</th>
+                                {% if loan.for_close == 'yes' %}
+                                <th>Collect Date</th>
+                                {% else %}
+                                <th>DueDate</th>
+                                {% endif %}
+                                <th>Dep.Date</th>
+                                <th>Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if loan.for_close == 'yes' %}
+                            {% for value in forInstalment %}
+                            <tr>
+                                <td class="text-right">{{ loan.loan_intrest_amount }}</td>
+                                <td class="text-right">{{ value.instalment_amt }}</td>
+                                <td class="text-right">{{ value.instalment_amt }}</td>
+                                <td class="text-right">-</td>
+                                <td>{{ value.collect_date | date_format }}</td>
+                                <td></td>
+                                <td>{{ value.remark }}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            {% for value in instalment %}
+                            <tr>
+                                <td class="text-right">{{ loan.loan_intrest_amount }}</td>
+                                <td class="text-right">{{ value.instalment_amt }}</td>
+                                <td class="text-right">
+                                    {% if value.status == 'paid' %}{{ value.instalment_amt }}{% endif %}
+                                </td>
+                                <td class="text-right">
+                                    {% if value.status == 'paid' %}{{ value.balance | number_format }}{% endif %}
+                                </td>
+                                <td>{{ value.due_date | date_format }}</td>
+                                <td>{{ value.deposit_date | date_format }}</td>
+                                <td>{{ value.remark }}</td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'app/footer.html' %}

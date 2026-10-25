@@ -1,0 +1,115 @@
+{% include 'admin/header.html' %}
+<style>
+  @media print {
+    .printNone, .main-header, .main-sidebar, .main-footer, .breadcrumb, .btn { display: none !important; }
+    .content-wrapper { margin-left: 0 !important; padding: 0 !important; }
+    .box { border: none !important; }
+  }
+</style>
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      Customer & Loan Instalment Detail
+      <button class="btn btn-success printBtn pull-right" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <h4><strong>Client Detail</strong></h4>
+            <table width="100%" class="table table-bordered">
+              <tr>
+                <td width="33%"><strong>Client Name:</strong> {{ loan.client_name }}</td>
+                <td width="33%"><strong>Father/Husband Name:</strong> {{ loan.father_name }}</td>
+                <td width="33%"><strong>City/Village:</strong> {{ loan.city_village }}</td>
+              </tr>
+              <tr>
+                <td><strong>District:</strong> {{ loan.district }}</td>
+                <td><strong>Mobile Number:</strong> {{ loan.mobile }}</td>
+                <td><strong>Aadhar Number:</strong> {{ loan.aadhar_no }}</td>
+              </tr>
+              <tr>
+                <td colspan="3"><strong>Branch Name:</strong> {{ loan.branch_name }}</td>
+              </tr>
+            </table>
+
+            <h4><strong>Loan Detail</strong></h4>
+            <table width="100%" class="table table-bordered">
+              <tr>
+                <td width="33%"><strong>Loan Application No:</strong> {{ loan.loan_application_no }}</td>
+                <td width="33%"><strong>Loan Application Date:</strong> {{ loan.loan_application_date|date_format }}</td>
+                <td width="33%"><strong>Loan Amount:</strong> ₹ {{ loan.loan_amount|number_format }}</td>
+              </tr>
+              <tr>
+                <td><strong>Collective Amount:</strong> ₹ {{ loan.loan_intrest_amount|number_format }}</td>
+                <td><strong>Instalments:</strong> {{ loan.instalment }}</td>
+                <td><strong>Instalment Amount:</strong> ₹ {{ loan.instalment_amount|number_format }}</td>
+              </tr>
+              <tr>
+                <td><strong>Paid Amount:</strong> ₹ {{ loan.paid_amount|number_format }}</td>
+                <td><strong>Due Amount:</strong> ₹ {{ loan.due_amount|number_format }}</td>
+                <td>
+                  {% if loan.for_close != 'yes' %}
+                    <strong>Paid Instalments:</strong> {{ loan.paid_instalment }}
+                  {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {% if loan.for_close != 'yes' %}
+                    <strong>Due Instalments:</strong> {{ loan.due_instalment }}
+                  {% endif %}
+                </td>
+                <td colspan="2"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Instalment Payments Ledger</h3>
+          </div>
+          <div class="box-body">
+            <table class="table table-bordered table-striped" width="100%">
+              <thead>
+                <tr>
+                  <th>S.No.</th>
+                  <th>Loan Amount</th>
+                  <th>Instalment Amount</th>
+                  <th>Debit</th>
+                  <th>Balance</th>
+                  <th>Due Date</th>
+                  <th>Deposit Date</th>
+                  <th>Remark</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in instalment %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td class="text-right">₹ {{ loan.loan_intrest_amount|number_format }}</td>
+                  <td class="text-right">₹ {{ i.instalment_amt|number_format }}</td>
+                  <td class="text-right">
+                    {% if i.debit %}₹ {{ i.debit|number_format }}{% endif %}
+                  </td>
+                  <td class="text-right">
+                    {% if i.balance is not none %}₹ {{ i.balance|number_format }}{% endif %}
+                  </td>
+                  <td>{{ i.due_date|date_format }}</td>
+                  <td>{{ i.deposit_date|date_format }}</td>
+                  <td>{{ i.remark }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% include 'admin/footer.html' %}

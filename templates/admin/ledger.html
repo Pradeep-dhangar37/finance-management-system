@@ -1,0 +1,129 @@
+{% include 'admin/header.html' %}
+<style>
+  @media print {
+    .printNone, .main-header, .main-sidebar, .main-footer, .breadcrumb, .btn { display: none !important; }
+    .content-wrapper { margin-left: 0 !important; padding: 0 !important; }
+    .box { border: none !important; }
+  }
+</style>
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>Ledger</h1>
+    <ol class="breadcrumb">
+      <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">Ledger</li>
+    </ol>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-body printNone">
+            <form method="POST" action="/admin/ledger">
+              <div class="row">
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label>Account (Client Name / Application No)</label>
+                    <select name="loan_id" class="select2" style="width: 100%;" required>
+                      <option value="">Select Account</option>
+                      {% for l in loan_list %}
+                        <option value="{{ l.loan_id }}" {% if l.loan_id == loan_id %}selected{% endif %}>
+                          {{ l.client_name }} ({{ l.loan_application_no }})
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label>From Date</label>
+                    <input type="text" name="from_date" placeholder="From Date" value="{{ from_date }}" class="form-control" id="from_date" autocomplete="off">
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label>To Date</label>
+                    <input type="text" name="to_date" placeholder="To Date" value="{{ to_date }}" class="form-control" id="to_date" autocomplete="off">
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <input type="submit" class="btn btn-primary btn-block" value="Search" style="margin-top:25px;">
+                </div>
+              </div>
+            </form>
+
+            {% if initial_loan %}
+              <div class="row" style="margin-top:15px; margin-bottom:10px;">
+                <div class="col-sm-6 text-center">
+                  <h4 style="color:#d9534f; margin:0;"><strong>Loan Amount: ₹ {{ initial_loan.loan_amount|number_format }}</strong></h4>
+                </div>
+                <div class="col-sm-6 text-center">
+                  <h4 style="color:#d9534f; margin:0;"><strong>Collective Amount: ₹ {{ initial_loan.loan_intrest_amount|number_format }}</strong></h4>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Ledger Entries</h3>
+            <button class="btn btn-success btn-sm pull-right printBtn" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+          </div>
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Instalment No.</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if initial_loan %}
+                <tr>
+                  <td>{{ initial_loan.loan_application_date|date_format }}</td>
+                  <td>-</td>
+                  <td class="text-right">₹ {{ initial_loan.loan_intrest_amount|number_format }}</td>
+                  <td></td>
+                  <td class="text-right">₹ {{ initial_loan.loan_intrest_amount|number_format }}</td>
+                </tr>
+                {% endif %}
+
+                {% for entry in running_entries %}
+                <tr>
+                  <td>{{ entry.payment_date|date_format }}</td>
+                  <td>{{ entry.instalment_no }}</td>
+                  <td></td>
+                  <td class="text-right">₹ {{ entry.instalment_amt|number_format }}</td>
+                  <td class="text-right">₹ {{ entry.balance|number_format }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              {% if initial_loan %}
+              <tfoot>
+                <tr>
+                  <td colspan="2" class="text-right"><strong>Totals:</strong></td>
+                  <td class="text-right"><strong>₹ {{ initial_loan.loan_intrest_amount|number_format }}</strong></td>
+                  <td class="text-right"><strong>₹ {{ tot_instalment_amt|number_format }}</strong></td>
+                  <td class="text-right"><strong>₹ {{ tot_balance|number_format }}</strong></td>
+                </tr>
+              </tfoot>
+              {% endif %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% include 'admin/footer.html' %}
+<script>
+  $(function(){
+    $('#from_date').datepicker({ dateFormat: 'dd-mm-yy' });
+    $('#to_date').datepicker({ dateFormat: 'dd-mm-yy' });
+  });
+</script>

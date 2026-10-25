@@ -1,0 +1,130 @@
+{% include 'admin/header.html' %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      Edit Loan
+      <a href="/admin/loan/list" class="btn btn-success btn-md pull-right"><i class="fa fa-dashboard"></i> Loan List</a>
+    </h1>
+  </section>
+
+  <style>
+    .editloaninput { pointer-events: none; background-color: #eee; }
+  </style>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-info">
+          <div class="row">
+            <div class="col-sm-12">
+              {% if edit.paid_instalment != 0 %}
+                <div class="alert alert-danger" style="margin: 20px 20px 0 20px;">
+                  <strong>The installment of this loan is already deposited, you cannot edit its financial amounts!</strong>
+                </div>
+              {% endif %}
+              <form method="POST" action="/admin/loan/edit/{{ edit.loan_id }}" style="margin-top:20px;">
+                <div class="box-body">
+                  {% if msg %}
+                    {{ msg|safe }}
+                  {% endif %}
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="branch_id">Branch Name</label>
+                        <select name="branch_id" id="branch_id" class="select2" style="width: 100%; border-radius:0px !important;" disabled>
+                          <option value="">Select Branch</option>
+                          {% for b in branch_list %}
+                            <option value="{{ b.branch_id }}" {% if b.branch_id == edit.branch_id %}selected{% endif %}>{{ b.branch_name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="client_name">Client Name</label>
+                        <input type="text" name="client_name" value="{{ edit.client_name }}" class="form-control" id="client_name" autocomplete="off" required>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="father_name">Father's / Husband Name</label>
+                        <input type="text" name="father_name" value="{{ edit.father_name }}" class="form-control" id="father_name" autocomplete="off" required>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="city_village">City/Village</label>
+                        <input type="text" name="city_village" value="{{ edit.city_village }}" class="form-control" id="city_village" autocomplete="off" required>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="district">District</label>
+                        <input type="text" name="district" value="{{ edit.district }}" class="form-control" id="district" autocomplete="off" required>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="text" name="mobile" value="{{ edit.mobile }}" class="form-control numInput" id="mobile" autocomplete="off" required maxlength="10">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="aadhar_no">Aadhar Number</label>
+                        <input type="text" name="aadhar_no" value="{{ edit.aadhar_no }}" class="form-control numInput" id="aadhar_no" autocomplete="off" required maxlength="12">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="loan_application_no">Loan Application No.</label>
+                        <input type="text" name="loan_application_no" value="{{ edit.loan_application_no }}" class="form-control numInput" id="loan_application_no" readonly>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="loan_date">Loan Application Date</label>
+                        <input type="text" name="loan_application_date" value="{{ edit.loan_application_date|date_format }}" class="form-control" id="loan_date" readonly>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="loan_amount">Loan Amount</label>
+                        <input type="number" step="0.01" name="loan_amount" value="{{ edit.loan_amount }}" class="form-control {% if edit.paid_instalment != 0 %}editloaninput{% endif %}" id="loan_amount">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="loan_intrest_amount">Loan Interest Amount</label>
+                        <input type="number" step="0.01" name="loan_intrest_amount" value="{{ edit.loan_intrest_amount }}" class="form-control {% if edit.paid_instalment != 0 %}editloaninput{% endif %}" id="loan_intrest_amount">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="instalment">Number Of Instalment</label>
+                        <input type="number" name="instalment" value="{{ edit.instalment }}" class="form-control numInput {% if edit.paid_instalment != 0 %}editloaninput{% endif %}" id="instalment">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="emi_date">EMI Start Date</label>
+                        <input type="text" name="emi_start_date" value="{{ edit.emi_start_date|date_format }}" class="form-control {% if edit.paid_instalment != 0 %}editloaninput{% endif %}" id="emi_date">
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-success">Edit Loan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% include 'admin/footer.html' %}
+<script>
+  $(function(){
+    $('#emi_date').datepicker({ dateFormat: 'dd-mm-yy' });
+  });
+</script>

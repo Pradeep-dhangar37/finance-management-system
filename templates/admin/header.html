@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Astha Finance</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/static/assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/assets/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/static/assets/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="/static/assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="/static/assets/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="/static/assets/bower_components/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="/static/assets/dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="/static/assets/bower_components/morris.js/morris.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  
+  <style>
+    .addMoreBtn, .inp-close { margin-top: 23px; }
+    .dataTables_length { margin-right: 30px !important; }
+    .skin-blue .sidebar a { color: #fff !important; }
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+      -webkit-appearance: none; margin: 0;
+    }
+    input[type=number] { -moz-appearance: textfield; }
+  </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <header class="main-header">
+    <a href="/admin/dashboard" class="logo" style="background:#000 !important;">
+      <span class="logo-mini"><b>AF</b></span>
+      <span class="logo-lg"><b>Astha Finance</b></span>
+    </a>
+    <nav class="navbar navbar-static-top" style="background:#000 !important;">
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" style="background:#000 !important;">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="/static/assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">{{ user.username }} &nbsp;&nbsp;<i class="fa fa-power-off" aria-hidden="true"></i></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="user-header" style="background:#000 !important;">
+                <img src="/static/assets/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <p>{{ user.username }}</p>
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="/admin/dashboard/changePassword" class="btn btn-default btn-flat">Change Password</a>
+                </div>
+                <div class="pull-right">
+                  <a href="/admin/login/logout" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <aside class="main-sidebar" style="background:#000 !important;">
+    <section class="sidebar">
+      <div class="text-center" style="background:#fff !important;padding:15px 0px;margin:20px;">
+        <img src="/static/img/logo.png" width="80%" alt="Logo">
+      </div>
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MAIN NAVIGATION</li>
+        <li>
+          <a href="/admin/dashboard">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/branch/add">
+            <i class="fa fa-university"></i> <span>Add Branch</span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-money"></i>
+            <span>Loan</span>
+            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/admin/loan"><i class="fa fa-circle-o"></i> Add Loan</a></li>
+            <li><a href="/admin/loan/list"><i class="fa fa-circle-o"></i> Loan List</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="ion ion-pie-graph"></i>
+            <span>Collections</span>
+            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/admin/collection/add"><i class="fa fa-circle-o"></i> Collection Input</a></li>
+            <li><a href="/admin/collection/list"><i class="fa fa-circle-o"></i> Collection List</a></li>
+            <li><a href="/admin/collection/todayCollection"><i class="fa fa-circle-o"></i> Today Collection List</a></li>
+            <li><a href="/admin/collection/todayPending"><i class="fa fa-circle-o"></i> Today Pending Collection</a></li>
+          </ul>
+        </li>
+        
+        <li>
+          <a href="/admin/dashboard/totalDueAmount">
+            <i class="fa fa-book"></i> <span>Total Due</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/ledger">
+            <i class="fa fa-book"></i> <span>Ledger</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/loan/close">
+            <i class="fa fa-window-close-o"></i> <span>Loan Close</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/report">
+            <i class="fa fa-file-text"></i> <span>Report</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/report/opclosingbalReport">
+            <i class="fa fa-file-text"></i> <span>Report 2</span>
+          </a>
+        </li> 
+        <li>
+          <a href="/admin/report/totalBalReport">
+            <i class="fa fa-file-text"></i> <span>Report 3</span>
+          </a>
+        </li> 
+        <li>
+          <a href="/admin/login/logout">
+            <i class="fa fa-power-off"></i> <span>Log Out</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </aside>

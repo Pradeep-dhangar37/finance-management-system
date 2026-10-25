@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astha Finance</title>
+    <link rel="stylesheet" href="/static/assets/frontend/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/solid.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/brands.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <style>
+        table thead tr th{
+            font-size:13px;
+        }
+        table tbody tr td{
+            font-size:13px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'app/header2.html' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 p-3">
+                <div class="text-center">
+                    <h4 style="margin-top:10px;margin-bottom:20px;">Today Pending Collection List</h4>
+                </div>
+                <div class="collectionListDiv">
+                    <div class="table-responsive">
+                        <table width="100%" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>App.&nbsp;No.</th>
+                                    <th>Amount</th>
+                                    <th>Due&nbsp;Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for value in collection_list %}
+                                <tr>
+                                    <td>{{ value.client_name }}</td>
+                                    <td>{{ value.loan_application_no }}</td>
+                                    <td>{{ value.instalment_amt }}</td>
+                                    <td>
+                                        <div style="width:80px;">{{ value.due_date | date_format }}</div>
+                                    </td>
+                                    <td>
+                                        <a href="/app/collection/instalment/{{ value.loan_id }}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'app/footer.html' %}

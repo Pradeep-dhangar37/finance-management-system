@@ -1,0 +1,51 @@
+{% include 'admin/header.html' %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>Total Due List</h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            {% if msg %}
+              {{ msg|safe }}
+            {% endif %}
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>S.No.</th>
+                  <th>Branch Name</th>
+                  <th>Client Name</th>
+                  <th>Mobile Number</th>
+                  <th>Application No.</th>
+                  <th>Due Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for l in loan_list %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ l.branch_name }}</td>
+                  <td>{{ l.client_name }}</td>
+                  <td>{{ l.mobile }}</td>
+                  <td>{{ l.loan_application_no }}</td>
+                  <td class="text-right">₹ {{ l.due_amount|number_format }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="5" class="text-right"><strong>Total Due</strong></td>
+                  <td class="text-right"><strong>₹ {{ total_due|number_format }}</strong></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% include 'admin/footer.html' %}

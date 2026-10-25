@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astha Finance</title>
+    <link rel="stylesheet" href="/static/assets/frontend/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/solid.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/brands.css">
+    <link rel="stylesheet" href="/static/assets/frontend/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <style>
+        .dashBoardBtnDiv a{
+            display:block;
+            margin-top:20px;
+            margin-bottom:20px;
+            padding:15px;
+            font-size:18px;
+            color:#fff !important;
+        }
+    </style>
+</head>
+<body>
+    {% include 'app/header2.html' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 p-0">
+                <div class="dashBoardBtnDiv">
+                    <a href="/app/collection/add" class="btn btn-block btn-success rounded-pill">Receipt</a>
+                    <a href="/app/collection/list" class="btn btn-block btn-info rounded-pill">Collection List</a>
+                    <a href="/app/collection/todayCollection" class="btn btn-block btn-primary rounded-pill">Today Collection</a>
+                    <a href="/app/collection/todayPending" class="btn btn-block btn-dark rounded-pill" style="color:#fff;">Today Pending Collection</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'app/footer.html' %}
